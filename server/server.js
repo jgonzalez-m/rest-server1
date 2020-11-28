@@ -14,7 +14,7 @@ app.use( require('./routes/usuario'));
 app.use(bodyParser.json())
 
 
-mongoose.connect('mongodb://localhost:27017/cafe', {
+mongoose.connect('mongodb+srv://koke:jtwFW3Dc4piqN90P@cluster0.bvxls.mongodb.net/cafe', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,

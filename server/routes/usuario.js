@@ -23,7 +23,7 @@ app.get('/usuario', function (req, res) {
                         err
                     });
                 }
-                Usuario.count({estado},(err,conteo)=>{
+                Usuario.countDocuments({estado},(err,conteo)=>{
                     res.json({
                         ok:true,
                         usuario,
