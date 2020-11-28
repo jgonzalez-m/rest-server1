@@ -1,6 +1,7 @@
 require('./config/config'); //configuracion del server
 
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
 const bodyParser = require('body-parser')
 
@@ -8,47 +9,25 @@ const bodyParser = require('body-parser')
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
  
+app.use( require('./routes/usuario'));
 // parse application/json
 app.use(bodyParser.json())
 
 
-app.get('/usuario', function (req, res) {
+mongoose.connect('mongodb://localhost:27017/cafe', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true
+}, (err,res)=>
+{
+    if ( err ) throw err;
 
-    res.json('get usuario');
+    console.log("base de datos online")
 });
 
 
-app.post('/usuario', function (req, res) {
 
-    let body = req.body;
-
-    if ( body.nombre === undefined ){
-        res.status(400).json({
-            ok: false,
-            mensaje: 'el nombre es necesario'
-        });
-    }else{
-        res.json({
-            persona: body
-        });
-
-    }
-    
-});
-
-
-app.put('/usuario/:id', function (req, res) {
-    
-    let id = req.params.id;
-    
-    res.json({
-       id 
-    }); 
-});
-app.delete('/usuario', function (req, res) {
-
-    res.json('delete usuario'); 
-});
 app.listen(process.env.Port, ()=> {
     console.log('escuchando puerto', process.env.Port);
 });

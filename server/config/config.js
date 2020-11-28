@@ -5,4 +5,8 @@
 //=============================
 // puerto
 //===========================
-process.env.Port = process.env.Port || 5000;
+process.env.Port = process.env.Port || 3000;
+
+//=======
+// puerto db
+process.env.Portdb = process.env.Portdb || 27017
