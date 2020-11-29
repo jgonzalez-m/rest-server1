@@ -1,10 +1,11 @@
 const express = require('express');
+const cors = require('cors');
 const _ = require('underscore');
 const bcrypt = require('bcrypt');
 const Usuario = require('../models/usuarios')
 const {verificaToken, verificaAdmin_Role} = require('../middlewares/autenticacion');//en {} se importa la funcion especifica
 const app = express();
-
+app.use(cors())
 app.get('/usuario', verificaToken, (req, res)=> {
     
     /*return res.json({

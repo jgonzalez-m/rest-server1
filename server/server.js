@@ -14,7 +14,10 @@ app.use( require('./routes/index'));
 // parse application/json
 app.use(bodyParser.json())
 
+//====================================================================================================00
+//cors
 
+//====================================================================================================00
 mongoose.connect('mongodb+srv://koke:jtwFW3Dc4piqN90P@cluster0.bvxls.mongodb.net/cafe', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
