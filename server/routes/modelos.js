@@ -1,77 +1,27 @@
 const express = require('express');
+const apiconnect = require('../middlewares/MDDconnect');
 const cors = require('cors');
 const _ = require('underscore');
+const { json } = require('body-parser');
+const { Body } = require('node-fetch');
 const app = express();
 
 // ===============================
 
 // ===============================
-let modelo={
-  "actors": [
-    {
-      "id": "1ed3469e-ba8b-4947-ab59-d133c74e4401",
-      "text": "Actor",
-      "type": "istar.Actor",
-      "x": 306,
-      "y": 173,
-      "customProperties": {
-        "Description": ""
-      },
-      "nodes": []
-    },
-    {
-      "id": "220c411b-f161-45c1-894a-3ac8cef6e8d8",
-      "text": "Actor",
-      "type": "istar.Actor",
-      "x": 915,
-      "y": 96,
-      "customProperties": {
-        "Description": ""
-      },
-      "nodes": []
+let test1={
+    algo:{
+        nombre:{},
+        tipo:"sada"
     }
-  ],
-  "orphans": [],
-  "dependencies": [
-    {
-      "id": "063350cd-9ddb-4194-a0d3-356f552360c9",
-      "text": "Dependum",
-      "type": "istar.Goal",
-      "x": 610.5,
-      "y": 134.5,
-      "customProperties": {
-        "Description": ""
-      },
-      "source": "1ed3469e-ba8b-4947-ab59-d133c74e4401",
-      "target": "220c411b-f161-45c1-894a-3ac8cef6e8d8"
-    }
-  ],
-  "links": [
-    {
-      "id": "68574a33-fac7-4224-abc4-65696f0ce279",
-      "type": "istar.DependencyLink",
-      "source": "1ed3469e-ba8b-4947-ab59-d133c74e4401",
-      "target": "063350cd-9ddb-4194-a0d3-356f552360c9"
-    },
-    {
-      "id": "cfc84755-3afd-4e9c-abe9-f9c443ce0364",
-      "type": "istar.DependencyLink",
-      "source": "063350cd-9ddb-4194-a0d3-356f552360c9",
-      "target": "220c411b-f161-45c1-894a-3ac8cef6e8d8"
-    }
-  ],
-  "display": {},
-  "tool": "pistar.2.0.0",
-  "istar": "2.0",
-  "saveDate": "Mon, 14 Dec 2020 01:37:47 GMT",
-  "diagram": {
-    "width": 2000,
-    "height": 1300,
-    "customProperties": {
-      "Description": ""
-    }
-  }
-}
+};
+let test2={
+    data:"data"
+};
+
+
+app.use(express.json()) // for parsing application/json
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 
 
@@ -80,8 +30,10 @@ var corsOptions = {
     optionsSucessStatus: 200
 }
 app.use(cors(corsOptions));
-
-app.get('/modelos',(req,res)=>{
+// 
+// devulve los modelos
+// 
+app.get('/modelos',async (req,res)=>{
     console.log(req.query.id);
     let idProyecto = req.query.id;
     if(!idProyecto){
@@ -90,13 +42,44 @@ app.get('/modelos',(req,res)=>{
             message: 'debe enviar un id de proyecto'
         });
     }
-    res.json({
-        modelo
+    let url = process.env.MDD_GET_MODEL + idProyecto;
+    let modelo = await apiconnect.model(url);
+    console.log(modelo);
+    res.send(modelo);
+    // res.json({
+    //     modelo
         
     
-    })
+    // });
 });
 
+//==========================================
+//solo verifica
+//==========================================
+app.post('/modelos/verificar',async (req,res)=>{
+    console.log("verificando modelo");
+    let body = req.body;
+    //console.log(body);
+    let respuesta = await apiconnect.postMdd(process.env.MDD_VERIFY,body);
+    console.log(respuesta);
+    return res.json({
+      respuesta
+    });//await apiconnect.verify(process.env.MDD_VERIFY,body);
+});
+
+
+
+app.post('/modelos/transformar',async (req,res)=>{
+    console.log("transformando modelo");
+    let body = req.body;
+    let respuesta = await apiconnect.postMdd(process.env.MDD_2AC,body);
+    return res.json({
+        respuesta
+    });
+});
+//
+//actualiza los 
+//
 
 app.put('/modelos',(req,res)=>{
     

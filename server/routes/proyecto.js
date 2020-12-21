@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const _ = require('underscore');
+const apiconect = require('../middlewares/MDDconnect');
 const Proyecto = require('../models/proyectos');
 const app = express();
 
@@ -38,28 +39,37 @@ app.get('/proyecto',(req,res)=>{
 });
 
 
-app.post('/proyecto',(req,res)=>{
+app.post('/proyecto',async (req,res)=>{
     let body = req.body;
     
-    
-    let proyecto = new Proyecto({
-        idUser: body.idUser,
-        idProyecto: body.idProyecto,
-        estado: body.estado,
-        ultimaActualizacion:body.ultimaActualizacion
-    });
-    proyecto.save((err,proyectoDB)=> {
-        if ( err ){
-            return res.status(400).json({
-                ok:false,
-                err
-            });
-        }
-        res.json({
-            ok: true,
-            proyecto: proyectoDB
+    let idProyecto=await apiconect.create(process.env.MDD_INIT);
+    if(idProyecto != Error){
+        var proyecto = new Proyecto({
+            idUser: body.idUser,
+            nombre: body.nombre,
+            idProyecto: idProyecto,
+            estado: body.estado,
+            ultimaActualizacion:body.ultimaActualizacion
+        });
+        proyecto.save((err,proyectoDB)=> {
+            if ( err ){
+                return res.status(400).json({
+                    ok:false,
+                    err
+                });
+            }
+            res.json({
+                ok: true,
+                proyecto: proyectoDB
+            })
+        });
+    }else{
+        return res.status(503).json({
+            ok:false,
+            Error:"no hay conexion con ModelManager"
         })
-    });
+    }  
+    
 });
 
 

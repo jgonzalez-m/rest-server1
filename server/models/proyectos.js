@@ -11,6 +11,10 @@ let proyectoSchema = new Schema({
         type: String,
         required:[true,"el id del usuario es necesario"]
     },
+    nombre:{
+        type: String,
+        required:[true,'el nobre del proyecto es necesario']
+    },
     idProyecto:{
         type: String,
         unique:true,
