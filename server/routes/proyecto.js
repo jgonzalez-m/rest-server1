@@ -3,6 +3,7 @@ const cors = require('cors');
 const _ = require('underscore');
 const apiconect = require('../middlewares/MDDconnect');
 const Proyecto = require('../models/proyectos');
+const Modelo = require('../models/modelos');
 const app = express();
 
 var corsOptions = {
@@ -90,4 +91,21 @@ app.put('/proyecto/:id',(req,res)=>{
     });
 });
 
+
+app.post('/proyecto/add',async (req,res)=>{//funcion temporal posiblente se remplaze
+    console.log("test");
+    let body = req.body;
+    var modelo = new Modelo({});
+    modelo.save((err,proyectoDB)=> {
+        if ( err ){
+            return res.status(400).json({
+                ok:false,
+                err
+            });
+        }
+        res.json({
+             id:proyectoDB.id
+        });
+    });
+});
 module.exports = app;

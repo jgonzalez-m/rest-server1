@@ -4,6 +4,9 @@ const cors = require('cors');
 const _ = require('underscore');
 const { json } = require('body-parser');
 const { Body } = require('node-fetch');
+// 
+const Modelo = require('../models/modelos');
+// 
 const app = express();
 
 // ===============================
@@ -53,6 +56,34 @@ app.get('/modelos',async (req,res)=>{
     // });
 });
 
+
+//========================== 
+// solo para pruebas
+app.get('/modelos/get',async (req,res)=>{
+    console.log(req.query.id);
+    let idProyecto = req.query.id;
+    if(!idProyecto){
+        return res.status(400).json({
+            ok:false,
+            message: 'debe enviar un id de proyecto'
+        });
+    }
+    Modelo.findById(idProyecto,(err,modelo)=>{
+        if ( err ){
+            return res.status(400).json({
+                ok:false,
+                err
+            });
+        }else{
+            return res.json({
+                modelo
+            });
+        };
+        
+    });
+});
+// 
+
 //==========================================
 //solo verifica
 //==========================================
@@ -78,11 +109,26 @@ app.post('/modelos/transformar',async (req,res)=>{
     });
 });
 //
-//actualiza los 
+//actualiza los modelos testeo
 //
 
 app.put('/modelos',(req,res)=>{
-    
+    let body = req.body
+    //var modelo = new Modelo(body.modelo);
+    console.log(req.query.id);
+    console.log(body);
+    let idProyecto = req.query.id;
+    Modelo.findByIdAndUpdate(idProyecto,body,(err,respuestaDB)=>{
+        if ( err ){
+            return res.status(400).json({
+                ok:false,
+                err
+            });
+        };
+        res.json({
+            modelo:respuestaDB
+         }); 
+    });
 });
 
 module.exports=app;
