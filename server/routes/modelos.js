@@ -58,15 +58,25 @@ app.get('/modelos',async (req,res)=>{
 //==========================================
 app.post('/modelos/verificar',async (req,res)=>{
     console.log("verificando modelo");
-    var body = req.body;
+    let body = req.body;
     //console.log(body);
-    let respuesta = await apiconnect.verify(process.env.MDD_VERIFY,body);
+    let respuesta = await apiconnect.postMdd(process.env.MDD_VERIFY,body);
     console.log(respuesta);
     return res.json({
       respuesta
     });//await apiconnect.verify(process.env.MDD_VERIFY,body);
 });
 
+
+
+app.post('/modelos/transformar',async (req,res)=>{
+    console.log("transformando modelo");
+    let body = req.body;
+    let respuesta = await apiconnect.postMdd(process.env.MDD_2AC,body);
+    return res.json({
+        respuesta
+    });
+});
 //
 //actualiza los 
 //

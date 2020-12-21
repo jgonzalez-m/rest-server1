@@ -19,7 +19,7 @@ let  create=async (url)=>{
       
 };
 
-let verify= async (url,body)=>{
+let postMdd= async (url,body)=>{
     try {
         console.log("intentando verificar");
         console.log(body);
@@ -52,6 +52,6 @@ let model =  async (url)=>{
 };
 module.exports={
     create,
-    verify,
+    postMdd,
     model
 };
