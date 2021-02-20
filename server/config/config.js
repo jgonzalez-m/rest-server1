@@ -48,4 +48,5 @@ process.env.URLDB = urlDB;
 process.env.MDD_INIT = process.env.MDD_INIT || "http://192.168.2.3:8023/init"; //inicio proyecto
 process.env.MDD_VERIFY = process.env.MDD_VERIFY || "http://192.168.2.4:8024";
 process.env.MDD_GET_MODEL = process.env.MDD_GET_MODEL || "http://192.168.2.3:8023/project/";
-process.env.MDD_2AC = process.env.MDD_2AC || "http://192.168.2.5:8025";
+process.env.MDD_2AC = process.env.MDD_2AC || "http://192.168.2.5:8025/adapter";
+process.env.MDD_SAVE = process.env.MDD_SAVE || "http://192.168.2.3:8023/project/"

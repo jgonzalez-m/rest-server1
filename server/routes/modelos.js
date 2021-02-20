@@ -12,15 +12,8 @@ const app = express();
 // ===============================
 
 // ===============================
-let test1={
-    algo:{
-        nombre:{},
-        tipo:"sada"
-    }
-};
-let test2={
-    data:"data"
-};
+
+
 
 
 app.use(express.json()) // for parsing application/json
@@ -35,7 +28,7 @@ var corsOptions = {
 app.use(cors(corsOptions));
 // 
 // devulve los modelos
-// 
+// no esta en uso 
 app.get('/modelos',async (req,res)=>{
     console.log(req.query.id);
     let idProyecto = req.query.id;
@@ -46,6 +39,7 @@ app.get('/modelos',async (req,res)=>{
         });
     }
     let url = process.env.MDD_GET_MODEL + idProyecto;
+    console.log(url);
     let modelo = await apiconnect.model(url);
     console.log(modelo);
     res.send(modelo);
@@ -58,7 +52,7 @@ app.get('/modelos',async (req,res)=>{
 
 
 //========================== 
-// solo para pruebas
+// solo para pruebas borrar
 app.get('/modelos/get',async (req,res)=>{
     console.log(req.query.id);
     let idProyecto = req.query.id;
@@ -90,7 +84,7 @@ app.get('/modelos/get',async (req,res)=>{
 app.post('/modelos/verificar',async (req,res)=>{
     console.log("verificando modelo");
     let body = req.body;
-    //console.log(body);
+    console.log(body);
     let respuesta = await apiconnect.postMdd(process.env.MDD_VERIFY,body);
     console.log(respuesta);
     return res.json({
@@ -112,23 +106,16 @@ app.post('/modelos/transformar',async (req,res)=>{
 //actualiza los modelos testeo
 //
 
-app.put('/modelos',(req,res)=>{
-    let body = req.body
+app.put('/modelos',async (req,res)=>{//actualizar modelo
+    let body =  _.pick(req.body,['model_AC','model_OOM','model_i']);
     //var modelo = new Modelo(body.modelo);
-    console.log(req.query.id);
-    console.log(body);
+    // console.log(req.query.id);
+    // console.log(body);
     let idProyecto = req.query.id;
-    Modelo.findByIdAndUpdate(idProyecto,body,(err,respuestaDB)=>{
-        if ( err ){
-            return res.status(400).json({
-                ok:false,
-                err
-            });
-        };
-        res.json({
-            modelo:respuestaDB
-         }); 
-    });
+    let url = process.env.MDD_SAVE+idProyecto;
+    console.log(url);
+    let respuesta = await apiconnect.putMDD(url,body);
+    return respuesta
 });
 
 module.exports=app;

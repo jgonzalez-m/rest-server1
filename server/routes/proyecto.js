@@ -4,7 +4,10 @@ const _ = require('underscore');
 const apiconect = require('../middlewares/MDDconnect');
 const Proyecto = require('../models/proyectos');
 const Modelo = require('../models/modelos');
+
 const app = express();
+app.use(express.json()) // for parsing application/json
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 var corsOptions = {
     origin:  '*' ,
@@ -103,9 +106,29 @@ app.post('/proyecto/add',async (req,res)=>{//funcion temporal posiblente se remp
                 err
             });
         }
-        res.json({
-             id:proyectoDB.id
+        var proyecto = new Proyecto({
+            idUser: body.idUser,
+            nombre: body.nombre,
+            idProyecto: proyectoDB.id,
+            estado: body.estado,
+            ultimaActualizacion:body.ultimaActualizacion
         });
+        console.log(body)
+        proyecto.save((err,proyectoDB)=> {
+            if ( err ){
+                return res.status(400).json({
+                    ok:false,
+                    err
+                });
+            }
+            
+            res.json({
+                proyecto:proyectoDB
+            });
+            
+        });
+        
     });
 });
+
 module.exports = app;
