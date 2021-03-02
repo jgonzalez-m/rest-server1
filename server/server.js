@@ -18,7 +18,7 @@ app.use(bodyParser.json())
 //cors
 
 //====================================================================================================00
-mongoose.connect('mongodb://localhost:27017/cafe', {
+mongoose.connect('mongodb+svr://koke:@cluster0.bvxls.mongodb.net/cafe', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
