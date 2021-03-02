@@ -4,20 +4,16 @@ const cors = require('cors');
 const _ = require('underscore');
 const { json } = require('body-parser');
 const { Body } = require('node-fetch');
+// 
+const Modelo = require('../models/modelos');
+// 
 const app = express();
 
 // ===============================
 
 // ===============================
-let test1={
-    algo:{
-        nombre:{},
-        tipo:"sada"
-    }
-};
-let test2={
-    data:"data"
-};
+
+
 
 
 app.use(express.json()) // for parsing application/json
@@ -32,7 +28,7 @@ var corsOptions = {
 app.use(cors(corsOptions));
 // 
 // devulve los modelos
-// 
+// no esta en uso 
 app.get('/modelos',async (req,res)=>{
     console.log(req.query.id);
     let idProyecto = req.query.id;
@@ -43,6 +39,7 @@ app.get('/modelos',async (req,res)=>{
         });
     }
     let url = process.env.MDD_GET_MODEL + idProyecto;
+    console.log(url);
     let modelo = await apiconnect.model(url);
     console.log(modelo);
     res.send(modelo);
@@ -53,13 +50,41 @@ app.get('/modelos',async (req,res)=>{
     // });
 });
 
+
+//========================== 
+// solo para pruebas borrar
+app.get('/modelos/get',async (req,res)=>{
+    console.log(req.query.id);
+    let idProyecto = req.query.id;
+    if(!idProyecto){
+        return res.status(400).json({
+            ok:false,
+            message: 'debe enviar un id de proyecto'
+        });
+    }
+    Modelo.findById(idProyecto,(err,modelo)=>{
+        if ( err ){
+            return res.status(400).json({
+                ok:false,
+                err
+            });
+        }else{
+            return res.json({
+                modelo
+            });
+        };
+        
+    });
+});
+// 
+
 //==========================================
 //solo verifica
 //==========================================
 app.post('/modelos/verificar',async (req,res)=>{
     console.log("verificando modelo");
     let body = req.body;
-    //console.log(body);
+    console.log(body);
     let respuesta = await apiconnect.postMdd(process.env.MDD_VERIFY,body);
     console.log(respuesta);
     return res.json({
@@ -78,11 +103,19 @@ app.post('/modelos/transformar',async (req,res)=>{
     });
 });
 //
-//actualiza los 
+//actualiza los modelos testeo
 //
 
-app.put('/modelos',(req,res)=>{
-    
+app.put('/modelos',async (req,res)=>{//actualizar modelo
+    let body =  _.pick(req.body,['model_AC','model_OOM','model_i']);
+    //var modelo = new Modelo(body.modelo);
+    // console.log(req.query.id);
+    // console.log(body);
+    let idProyecto = req.query.id;
+    let url = process.env.MDD_SAVE+idProyecto;
+    console.log(url);
+    let respuesta = await apiconnect.putMDD(url,body);
+    return respuesta
 });
 
 module.exports=app;

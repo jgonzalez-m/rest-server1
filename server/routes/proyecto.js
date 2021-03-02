@@ -3,7 +3,11 @@ const cors = require('cors');
 const _ = require('underscore');
 const apiconect = require('../middlewares/MDDconnect');
 const Proyecto = require('../models/proyectos');
+const Modelo = require('../models/modelos');
+
 const app = express();
+app.use(express.json()) // for parsing application/json
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 var corsOptions = {
     origin:  '*' ,
@@ -87,6 +91,43 @@ app.put('/proyecto/:id',(req,res)=>{
             id,
             proyecto: proyectoDB
          }); 
+    });
+});
+
+
+app.post('/proyecto/add',async (req,res)=>{//funcion temporal posiblente se remplaze
+    console.log("test");
+    let body = req.body;
+    var modelo = new Modelo({});
+    modelo.save((err,proyectoDB)=> {
+        if ( err ){
+            return res.status(400).json({
+                ok:false,
+                err
+            });
+        }
+        var proyecto = new Proyecto({
+            idUser: body.idUser,
+            nombre: body.nombre,
+            idProyecto: proyectoDB.id,
+            estado: body.estado,
+            ultimaActualizacion:body.ultimaActualizacion
+        });
+        console.log(body)
+        proyecto.save((err,proyectoDB)=> {
+            if ( err ){
+                return res.status(400).json({
+                    ok:false,
+                    err
+                });
+            }
+            
+            res.json({
+                proyecto:proyectoDB
+            });
+            
+        });
+        
     });
 });
 

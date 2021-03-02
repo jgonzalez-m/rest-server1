@@ -50,8 +50,36 @@ let model =  async (url)=>{
         return Error;
     }
 };
+
+let putMDD = async (url , body)=>{
+    try {
+        console.log("intentando actualizar");
+        let res = await fetch(url,{
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            method: 'PUT',
+            body: JSON.stringify(body),
+            redirect: 'follow'
+        });
+        console.log(res);
+        return true;
+    } catch(e){
+        console.log("fallo");
+        console.log(e);
+        return false;
+    }
+
+
+
+
+
+
+};
 module.exports={
     create,
     postMdd,
-    model
+    model,
+    putMDD
 };
