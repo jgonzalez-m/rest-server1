@@ -32,6 +32,6 @@ mongoose.connect('mongodb://localhost:27017/cafe', {
 
 
 
-app.listen(process.env.Port, ()=> {
-    console.log('escuchando puerto', process.env.Port);
+app.listen(process.env.PORT, ()=> {
+    console.log('escuchando puerto', process.env.PORT);
 });
