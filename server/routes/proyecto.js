@@ -4,6 +4,7 @@ const _ = require('underscore');
 const apiconect = require('../middlewares/MDDconnect');
 const Proyecto = require('../models/proyectos');
 const Modelo = require('../models/modelos');
+const {verificaToken} = require('../middlewares/autenticacion');//en {} se importa la funcion especifica
 
 const app = express();
 app.use(express.json()) // for parsing application/json
@@ -15,7 +16,7 @@ var corsOptions = {
 }
 app.use(cors(corsOptions));
 //falta añadir verificador de token
-app.get('/proyecto',(req,res)=>{
+app.get('/proyecto',verificaToken,(req,res)=>{
     let idUser = req.query.idUser;
     if(!idUser){
         return res.status(400).json({
@@ -43,10 +44,10 @@ app.get('/proyecto',(req,res)=>{
 });
 
 
-app.post('/proyecto',async (req,res)=>{
+app.post('/proyecto',verificaToken,async (req,res)=>{
     let body = req.body;
-    
-    let idProyecto=await apiconect.create(process.env.MDD_INIT);
+    console.log(body)
+    let idProyecto=await apiconect.create(process.env.MDD_INIT);//replantear orden de este servicio
     if(idProyecto != Error){
         var proyecto = new Proyecto({
             idUser: body.idUser,
@@ -77,9 +78,9 @@ app.post('/proyecto',async (req,res)=>{
 });
 
 
-app.put('/proyecto/:id',(req,res)=>{
+app.put('/proyecto/:id',(req,res)=>{//actualizacion de los proyectos
     let id = req.params.id;
-    let body = _.pick(req.body,['estado','ultimaActualizacion']); //controlo las datos que se pueden modificar
+    let body = _.pick(req.body,['estado','ultimaActualizacion','nombre']); //controlo las datos que se pueden modificar
     Proyecto.findByIdAndUpdate(id,body,{new: true, runValidators: true, context: 'query'},(err,proyectoDB)=>{
         if ( err ){
             return res.status(400).json({
