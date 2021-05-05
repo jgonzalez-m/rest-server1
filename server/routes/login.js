@@ -25,8 +25,10 @@ app.post('/login', (req,res)=>{
             return res.status(400).json({
                 ok:false,
                 err:{
-                    message: '(usuario) o contraseña incorrectos'
-                }
+                    message: '(usuario) o contraseña incorrectos',
+                    idErr:1
+                },
+                
             });
         };
 
@@ -34,7 +36,8 @@ app.post('/login', (req,res)=>{
             return res.status(400).json({
                 ok:false,
                 err:{
-                    message: 'usuario o (contraseña) incorrectos'
+                    message: '(contraseña) incorrectos',
+                    idErr:"2"
                 }
             });
         };
