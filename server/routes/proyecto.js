@@ -81,6 +81,7 @@ app.post('/proyecto',verificaToken,async (req,res)=>{
 app.put('/proyecto/:id',(req,res)=>{//actualizacion de los proyectos
     let id = req.params.id;
     let body = _.pick(req.body,['estado','ultimaActualizacion','nombre']); //controlo las datos que se pueden modificar
+    console.log(body)
     Proyecto.findByIdAndUpdate(id,body,{new: true, runValidators: true, context: 'query'},(err,proyectoDB)=>{
         if ( err ){
             return res.status(400).json({

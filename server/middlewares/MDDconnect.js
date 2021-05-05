@@ -44,7 +44,7 @@ let model =  async (url)=>{
         });
         let resMdd = await res.json();
         return resMdd;
-    } catch {
+    } catch(e) {
         console.log("hubo un error");
         console.log(e);
         return Error;
