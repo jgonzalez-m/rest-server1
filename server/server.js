@@ -18,7 +18,7 @@ app.use(bodyParser.json())
 //cors
 
 //====================================================================================================00
-mongoose.connect('mongodb://localhost:27017/cafe', {
+mongoose.connect('mongodb+srv://koke:jtwFW3Dc4piqN90P@cluster0.bvxls.mongodb.net/cafe', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
@@ -32,6 +32,6 @@ mongoose.connect('mongodb://localhost:27017/cafe', {
 
 
 
-app.listen(process.env.Port, ()=> {
-    console.log('escuchando puerto', process.env.Port);
+app.listen(process.env.PORT, ()=> {
+    console.log('escuchando puerto', process.env.PORT);
 });

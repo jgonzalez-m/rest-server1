@@ -3,14 +3,17 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/usuarios');
 const app = express();
-
+const _ = require('underscore');
+app.use(express.json()) // for parsing application/json
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 
 app.post('/login', (req,res)=>{
-    
-    let body = req.body;
-    //console.log(body.email);
-    //console.log(body.password);
+    let body = _.pick(req.body,['email','password']); //controlo las datos que se pueden modificar
+    //let body = req.body;
+    console.log(body)
+    console.log(body.email);
+    console.log(body.password);
     Usuario.findOne({email: body.email},(err,usuarioDB)=>{
         if(err){
             return res.status(500).json({
@@ -22,8 +25,10 @@ app.post('/login', (req,res)=>{
             return res.status(400).json({
                 ok:false,
                 err:{
-                    message: '(usuario) o contraseña incorrectos'
-                }
+                    message: '(usuario) o contraseña incorrectos',
+                    idErr:1
+                },
+                
             });
         };
 
@@ -31,7 +36,8 @@ app.post('/login', (req,res)=>{
             return res.status(400).json({
                 ok:false,
                 err:{
-                    message: 'usuario o (contraseña) incorrectos'
+                    message: '(contraseña) incorrectos',
+                    idErr:"2"
                 }
             });
         };
