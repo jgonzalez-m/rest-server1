@@ -8,7 +8,9 @@ const { Body } = require('node-fetch');
 const Modelo = require('../models/modelos');
 const { rest } = require('underscore');
 const modelos = require('../models/modelos');
-// 
+//
+const modelAssemble= require( '../helper/modelAssemble') 
+//
 const app = express();
 
 // ===============================
@@ -41,7 +43,7 @@ app.get('/modelos',async (req,res)=>{
             message: 'debe enviar un id de proyecto'
         });
     }
-    let url = process.env.MDD_GET_MODEL + idProyecto;
+    let url = process.env.MDD_GET_MODEL + idProyecto; //url para la peticion del modelo
     console.log(url);
     let modelo = await apiconnect.model(url);
     if(type==="0"){
@@ -127,8 +129,12 @@ app.post('/modelos/transformar',async (req,res)=>{//servicio solo para transform
         }
     }
     let idProyecto = req.query.id;
-    let url = process.env.MDD_SAVE+idProyecto;
-    respuesta = await apiconnect.putMDD(url,body);
+    let url = process.env.MDD_GET_MODEL + idProyecto; //url para la peticion del modelo
+    body=await modelAssemble.Assemble(url,body)//reensamblo el modelo para actualizarlo
+    console.log("=======================transform========================")
+    console.log(body)
+    url = process.env.MDD_SAVE+idProyecto;
+    respuesta = await apiconnect.putMDD(url,body);//ver
     console.log(respuesta);
     return res.json({
         respuesta
@@ -145,7 +151,9 @@ app.put('/modelos',async (req,res)=>{//actualizar modelo
     console.log("test guardado");
     console.log(body);
     let idProyecto = req.query.id;
-    let url = process.env.MDD_SAVE+idProyecto;
+    let url = process.env.MDD_GET_MODEL + idProyecto; //url para la peticion del modelo
+    body=await modelAssemble.Assemble(url,body)//reensamblo el modelo para actualizarlo
+    url = process.env.MDD_SAVE+idProyecto;
     console.log(url);
     let respuesta = await apiconnect.putMDD(url,body);
     console.log(respuesta)
