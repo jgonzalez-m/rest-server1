@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/usuarios');
@@ -7,6 +8,11 @@ const _ = require('underscore');
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
+var corsOptions = {
+    origin:  '*' ,
+    optionsSucessStatus: 200
+}
+app.use(cors(corsOptions));
 
 app.post('/login', (req,res)=>{
     let body = _.pick(req.body,['email','password']); //controlo las datos que se pueden modificar

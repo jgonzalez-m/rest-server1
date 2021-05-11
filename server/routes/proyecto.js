@@ -18,13 +18,14 @@ app.use(cors(corsOptions));
 //falta añadir verificador de token
 app.get('/proyecto',verificaToken,(req,res)=>{
     let idUser = req.query.idUser;
+    let estado = req.query.state
     if(!idUser){
         return res.status(400).json({
             ok:false,
             message: 'debe enviar un id de usuario'
         });
     }
-    Proyecto.find({idUser})
+    Proyecto.find({idUser,estado})
             .exec((err,proyecto)=>{
                 if ( err ){
                     return res.status(400).json({
@@ -32,7 +33,7 @@ app.get('/proyecto',verificaToken,(req,res)=>{
                         err
                     });
                 }
-                Proyecto.countDocuments({},(err,conteo)=>{
+                Proyecto.countDocuments({"idUser":idUser},(err,conteo)=>{
                     res.json({
                         ok:true,
                         proyecto,

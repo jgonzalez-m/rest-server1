@@ -6,15 +6,17 @@ const Usuario = require('../models/usuarios')
 const {verificaToken, verificaAdmin_Role} = require('../middlewares/autenticacion');//en {} se importa la funcion especifica
 const app = express();
 
+app.use(express.json()) // for parsing application/json
+app.use(express.urlencoded({ extended: false })) // for parsing application/x-www-form-urlencoded
 
 var corsOptions = {
     origin:  '*' ,
     optionsSucessStatus: 200
 }
-
-
-
 app.use(cors(corsOptions));
+
+
+
 app.get('/usuario', verificaToken, (req, res)=> {
     
     /*return res.json({
@@ -53,10 +55,10 @@ app.get('/usuario', verificaToken, (req, res)=> {
 });
 
 
-app.post('/usuario',[verificaToken,verificaAdmin_Role], function (req, res) {
+app.post('/usuario', function (req, res) {
 
     let body = req.body;
-    
+    console.log(body)
     let usuario = new Usuario({
         nombre: body.nombre,
         email: body.email,
