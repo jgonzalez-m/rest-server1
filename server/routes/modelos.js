@@ -130,7 +130,7 @@ app.post('/modelos/transformar',async (req,res)=>{//servicio solo para transform
     }
     let idProyecto = req.query.id;
     let url = process.env.MDD_GET_MODEL + idProyecto; //url para la peticion del modelo
-    body=await modelAssemble.Assemble(url,body)//reensamblo el modelo para actualizarlo
+    body=await modelAssemble.Assemble(url,body,idProyecto)//reensamblo el modelo para actualizarlo
     console.log("=======================transform========================")
     console.log(body)
     url = process.env.MDD_SAVE+idProyecto;
@@ -152,7 +152,7 @@ app.put('/modelos',async (req,res)=>{//actualizar modelo
     console.log(body);
     let idProyecto = req.query.id;
     let url = process.env.MDD_GET_MODEL + idProyecto; //url para la peticion del modelo
-    body=await modelAssemble.Assemble(url,body)//reensamblo el modelo para actualizarlo
+    body=await modelAssemble.Assemble(url,body,idProyecto)//reensamblo el modelo para actualizarlo
     url = process.env.MDD_SAVE+idProyecto;
     console.log(url);
     let respuesta = await apiconnect.putMDD(url,body);

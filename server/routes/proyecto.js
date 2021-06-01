@@ -97,6 +97,24 @@ app.put('/proyecto/:id',(req,res)=>{//actualizacion de los proyectos
     });
 });
 
+//test de actualizacion de stados con otros tipos de busqueda
+app.put('/proyecto/stateModel/:id',(req,res)=>{//requiere idProyecto no id del objeto
+    let idProyecto = req.params.id;
+    let body = _.pick(req.body,['estadoIstar','estadoAc','estadoMoo']); //controlo las datos que se pueden modificar
+    Proyecto.findOneAndUpdate({idProyecto},body,{new: true, runValidators: true, context: 'query'},(err,proyectoDB)=>{
+        if ( err ){
+            return res.status(400).json({
+                ok:false,
+                err
+            });
+        };
+        res.json({
+            
+            proyecto: proyectoDB
+         }); 
+    });
+})
+
 
 app.post('/proyecto/add',async (req,res)=>{//funcion temporal posiblente se remplaze
     console.log("test");

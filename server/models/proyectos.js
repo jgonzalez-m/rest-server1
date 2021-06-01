@@ -23,6 +23,18 @@ let proyectoSchema = new Schema({
     estado:{
         type:Boolean
     },
+    estadoIstar:{
+        type:Boolean,
+        default:false
+    },
+    estadoAc:{
+        type:Boolean,
+        default:false
+    },
+    estadoMoo:{
+        type:Boolean,
+        default:false
+    },
     ultimaActualizacion:{
         type:Date
     }
