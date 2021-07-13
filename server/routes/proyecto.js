@@ -66,7 +66,7 @@ app.post('/proyecto',verificaToken,async (req,res)=>{
             }
             res.json({
                 ok: true,
-                proyecto: proyectoDB
+                proyecto: proyectoDB,
             })
         });
     }else{

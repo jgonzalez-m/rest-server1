@@ -13,13 +13,31 @@ let verificaToken = (req, res, next)=>{
                 err
             });
         };
-
+        
         req.usuario = decoded.usuario;
         next();
     });
    
 };
+// =====================
+//  verifica token mail
+// =====================
+let verificaTokenMail = (req, res, next)=>{
 
+    let token = req.get('token');//en 'token' colocar el nombre de el header que envia el token
+    jwt.verify(token,process.env.SEED_MAIL, (err,decoded)=>{
+        if(err){
+            return res.status(401).json({
+                ok:false,
+                err
+            });
+        };
+
+        req.email = decoded.email;
+        next();
+    });
+   
+};
 //======================
 // verificar administrador
 //======================
@@ -41,5 +59,6 @@ let verificaAdmin_Role = (req,res,next)=>{
 };
 module.exports= {
     verificaToken,
-    verificaAdmin_Role
+    verificaAdmin_Role,
+    verificaTokenMail
 };
