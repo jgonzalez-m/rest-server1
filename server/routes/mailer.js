@@ -51,37 +51,46 @@ app.post('/send_verify',async (req,res)=>{
     subject: "test nodemailer", // Subject line
     text: process.env.WIRIN+'#/verify?token='+token, // plain text body
    
-  });
-  transporter.sendMail(info,(err,info)=>{
+  },(err)=>{
       if(err){
-          res.status(500).send(err.message);
+          return res.status(500).json({
+            message:err.message,
+            ok:false
+          })
       }else{
-        console.log("mail enviado")
-          
-          
+        return res.json({
+            ok:true,
+            token: token
+        })
       }
-  })
-  return res.json({
-    ok:true,
-    token: token
-})
+  });
+
+  
 
 })
 app.get('/verify_mail',verificaTokenMail, (req,res)=>{
 console.log(req.email)
-Usuario.findOneAndUpdate({email:req.email},{verify:true},{new: true},(err,usuarioDB)=>{
+Usuario.findOneAndUpdate({email:req.email},{verify:true},{new: true},(err,usuarioDB,)=>{
     if(err){
         return res.status(400).json({
             ok:false,
             err
         });
-    };
+    }
+    if(!usuarioDB){
+        return res.status(400).json({
+            ok:false,
+            message:"email no registrado"
+        });
+    }else{
+        return res.json({
+            nombre: usuarioDB.nombre,
+            verify:usuarioDB.verify,
+            ok:true
+        });
+    }
     
-    res.json({
-        nombre: usuarioDB.nombre,
-        verify:usuarioDB.verify,
-        ok:true
-    });
+    
 });
 
 })
