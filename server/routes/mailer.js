@@ -18,8 +18,10 @@ app.use(cors(corsOptions));
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
+        
         user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS
+        pass: process.env.MAIL_PASS,
+        
     }
 }); 
 
@@ -39,8 +41,7 @@ app.post('/send_verify',async (req,res)=>{
     }
     );
 
-    // Only needed if you don't have a real mail account for testing
-  let testAccount = await nodemailer.createTestAccount();
+   
 
   
 
@@ -55,6 +56,7 @@ app.post('/send_verify',async (req,res)=>{
       if(err){
           return res.status(500).json({
             message:err.message,
+            err:err,
             ok:false
           })
       }else{

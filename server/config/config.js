@@ -25,23 +25,15 @@ process.env.CADUCIDAD_TOKEN = 60 * 60 * 24 * 30;
 // SEED de autenticacion
 //
 //========
-process.env.SEED = process.env.SEED || 'este-es-el-seed-desarrollo';//modificar a futuro
+process.env.SEED = process.env.SEED || 'iugbjkbnzxauoigcusiabhdyulagluly';//modificar a futuro
 process.env.SEED_MAIL = process.env.SEED_MAIL || 'mail confirm';
 //=======
 // mongo
 //
 //========
 
-let urlDB;
-/*
-if(process.env.NODE_ENV === 'dev'){
-    urlDB = 'mongodb://localhost:27017/cafe';
-} else{
-    
-    urlDB = 'mongodb+svr://koke:@cluster0.bvxls.mongodb.net/cafe'; 
-}
-process.env.URLDB = urlDB;
-*/
+
+process.env.URLDB = process.env.URLDB || "mongodb://localhost:27017/wirin";
 
 //=============================
 // ip MDD
@@ -60,5 +52,11 @@ process.env.WIRIN = process.env.WIRIN || "https://wirin.netlify.app/"
 // ==========================
 // mail
 // ==========================
-process.env.MAIL_USER = process.env.MAIL_USER || "testforwirin@gmail.com";
-process.env.MAIL_PASS = process.env.MAIL_PASS || "Wirin.123";
+process.env.MAIL_USER = process.env.MAIL_USER || "";
+process.env.MAIL_PASS = process.env.MAIL_PASS || "";
+
+// ==========================
+//  keys
+// ==========================
+process.env.KEY_CLIENT_ID = process.env.KEY_CLIENT_ID || "";
+process.env.KEY_PRIVATE = process.env.KEY_PRIVATE || ""
